@@ -1,6 +1,6 @@
-# OpenAPI MCP Server
+# ElevenLabs MCP Server
 
-A Model Context Protocol (MCP) server that exposes OpenAPI endpoints as MCP resources. This server allows Large Language Models to discover and interact with REST APIs defined by OpenAPI specifications through the MCP protocol.
+A Model Context Protocol (MCP) server that exposes OpenAPI defined ElevenLabs endpoints as MCP resources. 
 
 ## Quick Start
 
@@ -14,7 +14,7 @@ You do not need to clone this repository to use this MCP server. You can simply 
 ```json
 {
   "mcpServers": {
-    "openapi": {
+    "ElevenLabs": {
       "command": "npx",
       "args": ["-y", "@angelogiacco/elevenlabs-mcp-server"],
       "env": {
@@ -37,7 +37,7 @@ This MCP server is pre-configured to work with the ElevenLabs API. To use it:
 ```json
 {
   "mcpServers": {
-    "elevenlabs": {
+    "ElevenLabs": {
       "command": "npx",
       "args": ["-y", "@angelogiacco/elevenlabs-mcp-server"],
       "env": {
