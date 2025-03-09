@@ -45,7 +45,7 @@ function loadConfig(): OpenAPIMCPServerConfig {
   }
   headers["Content-Type"] = "application/json";
 
-  const version = argv.serverVersion as string || process.env.SERVER_VERSION || "1.0.0";
+  const version = argv.serverVersion as string || process.env.SERVER_VERSION || "1.0.1";
 
   return {
     name: serverName,

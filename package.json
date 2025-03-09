@@ -1,6 +1,6 @@
 {
   "name": "@angelogiacco/elevenlabs-mcp-server",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "An ElevenLabs MCP server",
   "author": "Angelo Giacco <angelo@elevenlabs.io>",
   "license": "MIT",
