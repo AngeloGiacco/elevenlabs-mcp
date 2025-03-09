@@ -33,7 +33,7 @@ function loadConfig(): OpenAPIMCPServerConfig {
     .parseSync();
 
   const apiBaseUrl = "https://api.elevenlabs.io";
-  const openApiSpec = "./openapi.json";
+  const openApiSpec = "https://api.elevenlabs.io/openapi.json";
   const serverName = "elevenlabs-mcp-server";
   
   // Get API key from environment variable only (not from command line for security)

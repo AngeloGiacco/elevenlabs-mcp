@@ -52,7 +52,7 @@ This MCP server is pre-configured to work with the ElevenLabs API. To use it:
 
 The server is pre-configured with:
 - API Base URL: https://api.elevenlabs.io/
-- OpenAPI Spec: Local openapi.json file
+- OpenAPI Spec: https://api.elevenlabs.io/openapi.json
 - Server Name: elevenlabs-mcp-server
 
 ### Available ElevenLabs API Endpoints
