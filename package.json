@@ -2,6 +2,7 @@
   "name": "@angelogiacco/elevenlabs-mcp-server",
   "version": "1.0.0",
   "description": "An ElevenLabs MCP server",
+  "author": "Angelo Giacco <angelo@elevenlabs.io>",
   "license": "MIT",
   "type": "module",
   "main": "./dist/bundle.js",
