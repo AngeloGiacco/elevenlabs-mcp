@@ -112,7 +112,6 @@ class OpenAPIMCPServer {
   private async parseOpenAPISpec(): Promise<void> {
     const spec = await this.loadOpenAPISpec();
 
-    // Convert each OpenAPI path to an MCP tool
     for (const [path, pathItem] of Object.entries(spec.paths)) {
       if (!pathItem) continue;
 
@@ -120,16 +119,33 @@ class OpenAPIMCPServer {
         if (method === "parameters" || !operation) continue;
 
         const op = operation as OpenAPIV3.OperationObject;
-        // Create a clean tool ID by removing the leading slash and replacing special chars
         const cleanPath = path.replace(/^\//, "");
         const toolId = `${method.toUpperCase()}-${cleanPath}`.replace(
           /[^a-zA-Z0-9-]/g,
           "-",
         );
-        console.error(`Registering tool: ${toolId}`); // Debug logging
+
+
+
+
+        // Create a more concise name by using the summary or a simplified path
+        let toolName = op.summary || '';
+        if (!toolName) {
+          // Create a clean name from the path
+          toolName = cleanPath
+            .split('/')
+            .map(part => part.charAt(0).toUpperCase() + part.slice(1)) // Capitalize first letter
+            .join(' ');
+          toolName = `${method.toUpperCase()} ${toolName}`;
+        }
+        
+        // FOR MCP tools can not be longer than 64 characters
+        if (toolName.length > 64) {
+          toolName = toolName.substring(0, 61) + '...';
+        }
+
         const tool: ExtendedTool = {
-          name:
-            op.operationId || op.summary || `${method.toUpperCase()} ${path}`,
+          name: toolName,
           description:
             op.description ||
             `Make a ${method.toUpperCase()} request to ${path}`,
