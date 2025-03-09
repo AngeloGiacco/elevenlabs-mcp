@@ -125,23 +125,23 @@ class OpenAPIMCPServer {
           "-",
         );
 
-
-
-
         // Create a more concise name by using the summary or a simplified path
         let toolName = op.summary || '';
         if (!toolName) {
-          // Create a clean name from the path
-          toolName = cleanPath
+          // Create a clean name from the path and method
+          toolName = `${method.toUpperCase()}_${cleanPath
             .split('/')
-            .map(part => part.charAt(0).toUpperCase() + part.slice(1)) // Capitalize first letter
-            .join(' ');
-          toolName = `${method.toUpperCase()} ${toolName}`;
+            .join('_')}`; // Use underscores instead of spaces
         }
         
-        // FOR MCP tools can not be longer than 64 characters
+        // Clean the name to only allow valid characters
+        toolName = toolName
+          .replace(/[^a-zA-Z0-9_-]/g, '_') // Replace invalid chars with underscore
+          .replace(/_{2,}/g, '_'); // Replace multiple consecutive underscores with single one
+        
+        // Ensure length limit
         if (toolName.length > 64) {
-          toolName = toolName.substring(0, 61) + '...';
+          toolName = toolName.substring(0, 64);
         }
 
         const tool: ExtendedTool = {
