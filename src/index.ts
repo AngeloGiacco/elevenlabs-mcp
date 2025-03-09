@@ -23,11 +23,12 @@ interface OpenAPIMCPServerConfig {
 
 function loadConfig(): OpenAPIMCPServerConfig {
   const argv = yargs(hideBin(process.argv))
-    .option("version", {
+    .version(false)
+    .option("serverVersion", {
       alias: "v",
       type: "string",
       description: "Server version",
-      default: "1.0.0"
+      default: "1.0.1"
     })
     .parseSync();
 
@@ -42,8 +43,9 @@ function loadConfig(): OpenAPIMCPServerConfig {
   } else {
     console.error("Warning: ELEVENLABS_API_KEY environment variable not set. API calls will likely fail.");
   }
+  headers["Content-Type"] = "application/json";
 
-  const version = argv.version as string || process.env.SERVER_VERSION || "1.0.0";
+  const version = argv.serverVersion as string || process.env.SERVER_VERSION || "1.0.0";
 
   return {
     name: serverName,
@@ -84,14 +86,24 @@ class OpenAPIMCPServer {
 
   private async loadOpenAPISpec(): Promise<OpenAPIV3.Document> {
     if (typeof this.config.openApiSpec === "string") {
-      if (this.config.openApiSpec.startsWith("http")) {
-        // Load from URL
-        const response = await axios.get(this.config.openApiSpec);
-        return response.data as OpenAPIV3.Document;
-      } else {
-        // Load from local file
-        const content = await readFile(this.config.openApiSpec, "utf-8");
-        return JSON.parse(content) as OpenAPIV3.Document;
+      try {
+        if (this.config.openApiSpec.startsWith("http")) {
+          // Load from URL
+          const response = await axios.get(this.config.openApiSpec);
+          return response.data as OpenAPIV3.Document;
+        } else {
+          // Load from local file
+          try {
+            const content = await readFile(this.config.openApiSpec, "utf-8");
+            return JSON.parse(content) as OpenAPIV3.Document;
+          } catch (error: any) {
+            console.error(`Failed to read OpenAPI spec from ${this.config.openApiSpec}:`, error);
+            throw new Error(`Failed to load OpenAPI spec: ${error.message}`);
+          }
+        }
+      } catch (error) {
+        console.error("Failed to load OpenAPI spec:", error);
+        throw error;
       }
     }
     return this.config.openApiSpec as OpenAPIV3.Document;
